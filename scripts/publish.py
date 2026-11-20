@@ -110,6 +110,7 @@ def metadata(platform, item, project, changelog, release_type):
             "version_number": item["version_number"], "changelog": changelog,
             "game_versions": item["game_versions"], "loaders": [item["loader"]],
             "version_type": release_type, "featured": False, "status": "listed",
+            "environment": "client_only",
             "file_parts": ["file"], "primary_file": "file",
             "dependencies": [{"project_id": DEPENDENCIES[d][1], "dependency_type": kind}
                              for d, kind in item["dependencies"]],

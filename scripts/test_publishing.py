@@ -50,6 +50,7 @@ class PublishingTests(unittest.TestCase):
         item = {"name": "Scope Glint", "version_number": "1.1.0+1.21.1-neoforge", "loader": "neoforge",
                 "game_versions": ["1.21.1"], "java": "21", "dependencies": [("tacz", "required")]}
         mr = publish.metadata("modrinth", item, "project", "Fixes", "release")
+        self.assertEqual(mr["environment"], "client_only")
         self.assertEqual(mr["dependencies"], [{"project_id": "SzzJttH8", "dependency_type": "required"}])
         cf = publish.metadata("curseforge", item, 123, "Fixes", "release")
         self.assertEqual(cf["relations"]["projects"], [{"slug": "timeless-and-classics-zero", "type": "requiredDependency"}])
