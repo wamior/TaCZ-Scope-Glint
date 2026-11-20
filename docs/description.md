@@ -1,43 +1,23 @@
 # TaCZ Scope Glint
 
-TaCZ Scope Glint adds a bright glint to magnified optical scopes while a player aims, giving opponents a chance to spot a sniper. Red-dot and holographic sights do not glint, even when their ADS view zooms in.
+TaCZ Scope Glint adds a bright reflection to optical scopes when players aim. If a sniper is aiming toward you, the glint can give away their position.
 
-The glint appears near the shooter's scope when they aim toward you. By default, you must also be aiming or using a spyglass to see it. Solid cover blocks the effect; glass and foliage can let it through.
+Red-dot and holographic sights do not glint. On hybrid sights, switching to the red dot hides the effect. Scopes from third-party gunpacks are supported too.
 
-## Scopes and gunpacks
+By default, you can only see glints while aiming your own weapon or looking through a spyglass. Walls and other solid cover hide them, while glass and foliage can let them show through.
 
-The mod reads TaCZ's attachment data, so third-party gunpacks work without a separate list of supported items. Both installed scopes and built-in scope attachments are supported.
+## Settings
 
-On TaCZ 1.2.0, hybrid sights use the selected view and its optical lens nodes. Switching to a red dot disables the glint even if that mode has a high ADS zoom. Older TaCZ builds without this lens metadata exclude ambiguous hybrid sights.
+You can change the glint's size, visibility distance and viewing angle, or let players see it without aiming. The default visibility distance is **128 blocks**.
 
-Gunpack authors must mark their attachments correctly. A collimator incorrectly marked as an optical scope can still be treated as one. Missing or ambiguous hybrid lens data disables the effect.
+## Installation
 
-## Configuration
+Requires **TaCZ** for your Minecraft version. Install this addon on the **client**; the server does not need it.
 
-The `taczscopeglint-common.toml` file controls:
-
-- Whether the observer must be aiming or using a spyglass. Default: **enabled**.
-- The minimum current scope zoom, which must be strictly exceeded. Default: **1.5×**.
-- The maximum glint distance. Default: **128 blocks**.
-- The viewing angle from the shooter's aim direction. Default: **45°**.
-- The glint size. Default: **1.0**.
-- Clickable update notices, shown once per game launch. Default: **enabled**.
-
-The mod uses the players already tracked by Minecraft. It does not increase player render distance or server tracking range.
-
-## Requirements
-
-Install TaCZ Scope Glint on the **client**, alongside TaCZ for the same Minecraft version. The server does not need this addon.
-
-| Minecraft | Loader | TaCZ build used for compilation |
-|---|---|---|
-| 1.18.2 | Forge | 1.1.4-hotfix2 |
-| 1.19.2 | Forge | 1.1.4-hotfix2 |
-| 1.20.1 | Forge | 1.2.0-hotfix |
-| 1.21.1 | NeoForge | 1.2.0-hotfix |
+Available for Forge on **1.18.2, 1.19.2 and 1.20.1**, and NeoForge on **1.21.1**.
 
 ## Modpacks and support
 
-You can include unmodified release builds in modpacks on CurseForge or Modrinth without asking permission.
+You can include unmodified builds in modpacks on CurseForge or Modrinth without asking permission.
 
 Report bugs or suggest changes on [GitHub Issues](https://github.com/wamior/TaCZ-Scope-Glint/issues).

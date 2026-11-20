@@ -1,1 +1,1 @@
-Adds glints to magnified TaCZ scopes while aiming, making snipers easier to spot. Red-dot sights stay hidden, solid cover blocks the effect, and third-party gunpacks are supported.
+Adds a visible glint when players aim through optical scopes in TaCZ. Red-dot and holographic sights do not glint.
