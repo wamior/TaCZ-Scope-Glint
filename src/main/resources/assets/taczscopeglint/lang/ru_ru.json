@@ -1,0 +1,13 @@
+{
+  "taczscopeglint.configuration.title": "Настройки TaCZ Scope Glint",
+  "taczscopeglint.configuration.section.taczscopeglint.common.toml": "Настройки TaCZ Scope Glint",
+  "taczscopeglint.configuration.section.taczscopeglint.common.toml.title": "Настройки TaCZ Scope Glint",
+  "taczscopeglint.configuration.minZoomThreshold": "Минимальная кратность зума",
+  "taczscopeglint.configuration.minZoomThreshold.tooltip": "Блик появляется только у оптики с признаком TaCZ scope=true и текущей кратностью строго выше порога. Коллиматоры и голографические прицелы без этого признака не бликуют при любом зуме ADS. По умолчанию: 1.5x",
+  "taczscopeglint.configuration.glintVisibleRange": "Дальность видимости блика",
+  "taczscopeglint.configuration.glintVisibleRange.tooltip": "Максимальная дистанция (в блоках), с которой виден блик прицела. По умолчанию: 128",
+  "message.taczscopeglint.update": "TaCZ Scope Glint: доступно обновление (%s → %s). %s",
+  "message.taczscopeglint.update.link": "Скачать",
+  "taczscopeglint.configuration.updateNotices": "Уведомления об обновлениях",
+  "taczscopeglint.configuration.updateNotices.tooltip": "Показывать уведомление об обновлении со ссылкой один раз за запуск игры."
+}

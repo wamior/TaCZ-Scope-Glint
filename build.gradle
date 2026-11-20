@@ -1,0 +1,120 @@
+plugins {
+    id 'dev.architectury.loom' version '1.17.493' apply false
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'dev.architectury.loom'
+    def mc = project.property('minecraft_version')
+    def loader = project.property('loader')
+    def modern = mc in ['1.20.1', '1.21.1']
+    def javaRelease = project.property('java_release') as int
+    group = rootProject.mod_group_id
+    version = rootProject.mod_version
+    base.archivesName = "TaCZ-Scope-Glint-${loader}-${mc}"
+    java {
+        toolchain.languageVersion = JavaLanguageVersion.of(21)
+        sourceCompatibility = JavaVersion.toVersion(javaRelease)
+        targetCompatibility = JavaVersion.toVersion(javaRelease)
+    }
+    loom { silentMojangMappingsLicense() }
+    repositories {
+        mavenCentral()
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://maven.neoforged.net/releases/' }
+        if (mc == '1.18.2') {
+            // The old Forge endpoint intermittently rejects this tool; NeoForge hosts the same artifact.
+            exclusiveContent {
+                forRepository {
+                    maven { name = 'LegacyForgeTooling'; url = 'https://maven.neoforged.net/releases/' }
+                }
+                filter {
+                    includeVersion('net.minecraftforge', 'binarypatcher', '1.0.12')
+                    includeVersion('com.ibm.icu', 'icu4j', '61.1')
+                }
+            }
+        }
+    }
+    dependencies {
+        minecraft "com.mojang:minecraft:${mc}"
+        mappings loom.officialMojangMappings()
+        if (loader == 'neoforge') neoForge "net.neoforged:neoforge:${project.loader_version}"
+        else forge "net.minecraftforge:forge:${mc}-${project.loader_version}"
+        modCompileOnly files(rootProject.file("libs/${project.tacz_jar}"))
+        modLocalRuntime files(rootProject.file("libs/${project.tacz_jar}"))
+        // Loom strips jar-in-jar entries from remapped mods. Restore TaCZ's own libraries for dev runs.
+        def runtimeDir = rootProject.file("libs/.runtime/${project.tacz_jar.replace('.jar', '')}")
+        modLocalRuntime fileTree(new File(runtimeDir, 'mods')) { include '*.jar' }
+        forgeRuntimeLibrary fileTree(new File(runtimeDir, 'libraries')) { include '*.jar' }
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+    // Gameplay is shared; loader entry points and Minecraft API differences have small adapters.
+    def sourceDirs = [rootProject.file('src/main/java'), rootProject.file("src/${loader}/java"),
+                      rootProject.file("src/${modern ? 'modern' : 'legacy'}/java"),
+                      rootProject.file("src/${mc == '1.18.2' ? 'chat-legacy' : 'chat-modern'}/java")]
+    def prepared = layout.buildDirectory.dir('generated/java')
+    def preprocess = tasks.register('preprocessSources', Sync) {
+        from sourceDirs
+        into prepared
+        inputs.property('loader', loader)
+        inputs.property('minecraft_version', mc)
+        inputs.file(rootProject.file('build.gradle'))
+        filter { String line ->
+            if (loader == 'forge') {
+                line = line.replace('net.neoforged.neoforge.common.ModConfigSpec', 'net.minecraftforge.common.ForgeConfigSpec')
+                           .replace('ModConfigSpec', 'ForgeConfigSpec')
+                           .replace('net.neoforged.api.distmarker', 'net.minecraftforge.api.distmarker')
+            }
+            if (mc == '1.18.2') {
+                line = line.replace('RegisterParticleProvidersEvent', 'ParticleFactoryRegisterEvent')
+                           .replace('event.registerSpriteSet(', 'Minecraft.getInstance().particleEngine.register(')
+            }
+            if (mc == '1.19.2') {
+                line = line.replace('event.registerSpriteSet(', 'event.register(')
+            }
+            line
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs = [prepared]
+            resources.srcDirs = [rootProject.file('src/main/resources'), rootProject.file("src/${loader}/resources")]
+        }
+        test.java.srcDirs = [rootProject.file('src/test/java')]
+        if (modern) test.java.srcDir rootProject.file('src/test-modern/java')
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = javaRelease
+    }
+    tasks.named('compileJava') { dependsOn preprocess }
+    tasks.named('test') {
+        useJUnitPlatform()
+        systemProperty 'scopeglint.libs', rootProject.file('libs').absolutePath
+    }
+    processResources {
+        def props = [mod_version: rootProject.mod_version, minecraft_version: mc,
+                     loader_major: project.loader_major, loader_version: project.loader_version,
+                     tacz_version: project.tacz_version, pack_format: project.pack_format]
+        inputs.properties props
+        filesMatching(['META-INF/*.toml', 'pack.mcmeta']) { expand props }
+    }
+    tasks.named('jar', Jar) {
+        archiveClassifier = 'dev'
+        manifest.attributes('Implementation-Version': rootProject.mod_version)
+        from(rootProject.file('LICENSE'))
+    }
+    def remap = tasks.named('remapJar') { destinationDirectory = layout.buildDirectory.dir('remapped') }
+    tasks.register('releaseJar', Copy) {
+        from remap.flatMap { it.archiveFile }
+        into rootProject.layout.buildDirectory.dir("libs/${rootProject.mod_version}/${mc}")
+    }
+    tasks.named('assemble') { dependsOn 'releaseJar' }
+}
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Builds and tests all four Minecraft targets.'
+    subprojects.each { dependsOn "${it.path}:build" }
+}

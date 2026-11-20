@@ -1,0 +1,100 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to release (v1.1.0)
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python scripts/verify_release.py --tag "$TAG"
+        env:
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+  build:
+    needs: validate
+    uses: ./.github/workflows/build.yml
+    with:
+      source_ref: ${{ github.event.inputs.tag || github.ref }}
+  github:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jars-*
+          path: build/libs/
+          merge-multiple: true
+      - run: python scripts/verify_artifacts.py
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        shell: bash
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "GitHub release already exists; refusing to overwrite files."
+          else
+            mapfile -d '' jars < <(find build/libs -name '*.jar' -print0)
+            gh release create "$TAG" "${jars[@]}" --verify-tag --title "TaCZ Scope Glint ${TAG#v}" --notes-file CHANGELOG.md
+          fi
+  platforms:
+    needs: github
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jars-*
+          path: build/libs/
+          merge-multiple: true
+      - name: Restore upload receipts on retry
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "$GITHUB_RUN_ID" --name publish-state --dir .publish
+      - name: Publish the same artifacts to Modrinth and CurseForge
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID }}
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+        run: python scripts/publish.py --changelog-file CHANGELOG.md --upload
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: publish-state
+          path: .publish/state.json
+          include-hidden-files: true
+          overwrite: true
+          if-no-files-found: ignore

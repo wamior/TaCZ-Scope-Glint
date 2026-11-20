@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="[${loader_major},)"
+license="All Rights Reserved"
+
+issueTrackerURL="https://github.com/wamior/TaCZ-Scope-Glint/issues"
+
+[[mods]]
+modId="taczscopeglint"
+version="${mod_version}"
+displayName="TaCZ Scope Glint"
+authors="wamior"
+logoFile="logo.png"
+displayURL="https://github.com/wamior/TaCZ-Scope-Glint"
+updateJSONURL="https://raw.githubusercontent.com/wamior/TaCZ-Scope-Glint/main/update.json"
+displayTest="IGNORE_ALL_VERSION"
+description='''
+Adds a visible glint to magnified optical scopes while aiming in TaCZ.
+Red-dot and holographic sights do not glint. Supports third-party gunpacks.
+'''
+
+[[dependencies.taczscopeglint]]
+modId="forge"
+mandatory=true
+versionRange="[${loader_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.taczscopeglint]]
+modId="minecraft"
+mandatory=true
+versionRange="[${minecraft_version}]"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.taczscopeglint]]
+modId="tacz"
+mandatory=true
+versionRange="[${tacz_version},)"
+ordering="AFTER"
+side="CLIENT"

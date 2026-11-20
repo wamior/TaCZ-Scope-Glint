@@ -1,0 +1,18 @@
+{
+  "tacz-1.18.2-1.1.4-hotfix2.jar": {
+    "url": "https://cdn.modrinth.com/data/SzzJttH8/versions/YRMiwS2O/tacz-1.18.2-1.1.4-hotfix2.jar",
+    "sha512": "1cc2643450e38da5003d695c5084d8d8df1b8e462e79c0154436325ff8617a7370a41fe72b83f3320a5731cafe896af806905dbcea414ad26f10e8b27005e899"
+  },
+  "tacz-1.19.2-1.1.4-hotfix2.jar": {
+    "url": "https://cdn.modrinth.com/data/SzzJttH8/versions/OwAKV8JE/tacz-1.19.2-1.1.4-hotfix2.jar",
+    "sha512": "a1dc5de732cf2284113e4d3964c3b68f3f5939c0cb5fcffb993935e4216b7a510a5f91c7a66730757ff82adbe8be623f0da136bf3adaf330645920f68fa4f70f"
+  },
+  "tacz-forge-1.20.1-1.2.0-hotfix.jar": {
+    "url": "https://cdn.modrinth.com/data/SzzJttH8/versions/4yAbMXbz/tacz-forge-1.20.1-1.2.0-hotfix.jar",
+    "sha512": "293708e01cc997834f6ab1ae62b1e67c11aecbd834d5fd81f08a647dc550f5dbe460ce5c1a85b68781d733d16ce3422996514fcf3acd722e7cf73e9cabb81937"
+  },
+  "tacz-neoforge-1.21.1-1.2.0-hotfix.jar": {
+    "url": "https://cdn.modrinth.com/data/SzzJttH8/versions/tJiZL0He/tacz-neoforge-1.21.1-1.2.0-hotfix.jar",
+    "sha512": "cd14c1a2711164353c400e620459ca82f3f890e641789e79fa3710eea727973b36a09ec7330652fd52cf92664c7bd867e3df49fadb390da052df0c136b658349"
+  }
+}

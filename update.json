@@ -1,0 +1,25 @@
+{
+  "homepage": "https://github.com/wamior/TaCZ-Scope-Glint/releases/latest",
+  "promos": {
+    "1.18.2-latest": "1.1.0",
+    "1.18.2-recommended": "1.1.0",
+    "1.19.2-latest": "1.1.0",
+    "1.19.2-recommended": "1.1.0",
+    "1.20.1-latest": "1.1.0",
+    "1.20.1-recommended": "1.1.0",
+    "1.21.1-latest": "1.1.0",
+    "1.21.1-recommended": "1.1.0"
+  },
+  "1.18.2": {
+    "1.1.0": "Optical-only glints, selected hybrid lenses, cover occlusion, four Minecraft versions and update notices."
+  },
+  "1.19.2": {
+    "1.1.0": "Optical-only glints, selected hybrid lenses, cover occlusion, four Minecraft versions and update notices."
+  },
+  "1.20.1": {
+    "1.1.0": "Optical-only glints, selected hybrid lenses, cover occlusion, four Minecraft versions and update notices."
+  },
+  "1.21.1": {
+    "1.1.0": "Optical-only glints, selected hybrid lenses, cover occlusion, four Minecraft versions and update notices."
+  }
+}

@@ -1,0 +1,54 @@
+### Gradle ###
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/**/out/
+
+.run/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.eclipse/
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/**/bin/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+### Minecraft Modding ###
+run/
+!**/src/**/run/
+**/src/generated/**/.cache/
+repo/
+!**/src/**/repo/
+TACZ-1.21.1-neoforge-1.21.1
+# Local dependencies, credentials, and publishing receipts
+libs/*.jar
+libs/.runtime/
+.env
+.env.*
+!.env.example
+.publish/
+__pycache__/
+*.pyc
+logs/
+crash-reports/
+*.log
+*.log.gz

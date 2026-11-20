@@ -1,0 +1,13 @@
+{
+  "taczscopeglint.configuration.title": "TaCZ Scope Glint Settings",
+  "taczscopeglint.configuration.section.taczscopeglint.common.toml": "TaCZ Scope Glint Settings",
+  "taczscopeglint.configuration.section.taczscopeglint.common.toml.title": "TaCZ Scope Glint Settings",
+  "taczscopeglint.configuration.minZoomThreshold": "Minimum Zoom Threshold",
+  "taczscopeglint.configuration.minZoomThreshold.tooltip": "Only optical scopes marked TaCZ scope=true with current zoom strictly above this threshold can glint. Collimator/red-dot/holographic sights without this flag never glint, regardless of ADS zoom. Default: 1.5x",
+  "taczscopeglint.configuration.glintVisibleRange": "Glint Visible Range",
+  "taczscopeglint.configuration.glintVisibleRange.tooltip": "Maximum distance (blocks) at which other players see the scope glint. Default: 128",
+  "message.taczscopeglint.update": "TaCZ Scope Glint: update available (%s → %s). %s",
+  "message.taczscopeglint.update.link": "Download",
+  "taczscopeglint.configuration.updateNotices": "Update notices",
+  "taczscopeglint.configuration.updateNotices.tooltip": "Show a clickable update notice once per game launch."
+}
